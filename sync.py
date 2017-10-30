@@ -36,8 +36,8 @@ headers = {
 def main():
     page = requests.get(
         "http://classic-blog.udn.com/article/post.jsp", headers=headers
-    )
-    print(page.content)
+    ).content.decode('utf-8')
+    print(page)
     pass
 
 
