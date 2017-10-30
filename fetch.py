@@ -33,7 +33,6 @@ def fetch_list(n):
             li.append(r[:2])
             s = dumps(r, ensure_ascii=False) + "\n"
             data.write(s.encode('utf-8'))
-            break
     return li
 
 
