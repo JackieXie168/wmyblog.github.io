@@ -41,17 +41,26 @@ INDEX = Template("""
 <!DOCTYPE html><html><head><meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name=viewport><meta charset=utf-8>
 <link rel="stylesheet" href="/html/init.css">
 <style>
+.LI li{
+list-style-type: disc;
+}
+.LI li{
+margin-bottom:8px;
+}
+.LI a{
+text-decoration: none;
+}
 .LI .title{
-    color:#000;
-    text-decoration: none;
+color:#000;
 }
 .LI .title:hover{
-    color:#f40;
+color:#f40;
 }
 .LI .date{
-    font-size:12px;
-    float:right;
- }
+font-size:12px;
+color:#999;
+float:right;
+}
 </style>
 </head>
 <body><div class="BODY">
