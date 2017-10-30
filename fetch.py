@@ -36,14 +36,29 @@ def fetch_list(n):
             break
     return li
 
+
 INDEX = Template("""
 <!DOCTYPE html><html><head><meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name=viewport><meta charset=utf-8>
 <link rel="stylesheet" href="/html/init.css">
+<style>
+.LI .title{
+    color:#000;
+    text-decoration: none;
+}
+.LI .title:hover{
+    color:#f40;
+}
+.LI .date{
+    font-size:12px;
+    float:right;
+ }
+</style>
 </head>
 <body><div class="BODY">
-<ul>
+<h1>王孟源的博客</h1>
+<ul class="LI">
 %for url, name in li:
-<li><a href="/${url}">${name}</a></li>
+<li><a class="title" href="/${url}">${name}</a><a class="date" href="/${url}">${url[5:15]}</a></li>
 %endfor
 </ul>
 </div></body></html>
@@ -138,10 +153,13 @@ def parse(id, html):
         reply_li
     ]
 
+
 def main():
     li = []
     for i in range(1, 5):
         li.extend(fetch_list(i))
     with open("index.html", "w") as index:
         index.write(INDEX.render(li=li))
+
+
 main()
