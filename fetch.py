@@ -92,27 +92,27 @@ HTML = Template("""<!DOCTYPE html><html><head><meta content="width=device-width,
 <div class="BACK"><a href="/">返回索引页</a></div>
 </body></html>""")
 
-HTML = Template("""
-<div class="POST" style="font-size:16px">${post}</div>
-<p class="DATE">发表日期 : ${date}</p>
-<div class="REPLY_LI">
-%if reply_li:
-<hr>
-<h2>${len(reply_li)} 条留言</h2>
-%for say, reply, user, time in reply_li:
-<hr>
-<div class="LI" style="font-size:16px">
-<p style="font-size:16px;font-weight:bold" class="USER"><span class="NAME">${user} 留言 : </span></p>
-<div style="font-size:16px" class="SAY">${say} (${time})</div>
-%if reply:
-<p style="font-size:16px;font-weight:bold">王孟源 回复:</p>
-<pstyle="font-size:16px" class="REPLY">${reply}<p>
-%endif
-</div>
-%endfor
-%endif
-</div>
-""")
+# HTML = Template("""
+# <div class="POST" style="font-size:16px">${post}</div>
+# <p class="DATE">发表日期 : ${date}</p>
+# <div class="REPLY_LI">
+# %if reply_li:
+# <hr>
+# <h2>${len(reply_li)} 条留言</h2>
+# %for say, reply, user, time in reply_li:
+# <hr>
+# <div class="LI" style="font-size:16px">
+# <p style="font-size:16px;font-weight:bold" class="USER"><span class="NAME">${user} 留言 : </span></p>
+# <div style="font-size:16px" class="SAY">${say} (${time})</div>
+# %if reply:
+# <p style="font-size:16px;font-weight:bold">王孟源 回复:</p>
+# <pstyle="font-size:16px" class="REPLY">${reply}<p>
+# %endif
+# </div>
+# %endfor
+# %endif
+# </div>
+# """)
 
 def parse(id, html):
     doc = BeautifulSoup(html)
