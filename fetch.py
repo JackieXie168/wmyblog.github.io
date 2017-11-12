@@ -15,24 +15,21 @@ def fetch_list(n):
     r = requests.get(url)
     doc = BeautifulSoup(r.content)
     li = []
-    with gzip.open("html/data.json.gz", "wb") as data:
-        for h2 in doc.find_all('h2'):
-            a = h2.find('a')
-            if not a:
-                continue
+    for h2 in doc.find_all('h2'):
+        a = h2.find('a')
+        if not a:
+            continue
 
-            href = a.attrs['href']
-            id = href.split("/")[-1]
-            r = requests.get("http://newsblog.chinatimes.com/" + href)
-            content = r.content.decode('utf-8')
-            # with open("org/%s.html"%id, "w") as f:
-            #     f.write(content)
-            print(id)
-            content = RE_FONT.sub('', content)
-            r = parse(id, content)
-            li.append(r[:2])
-            s = dumps(r, ensure_ascii=False) + "\n"
-            data.write(s.encode('utf-8'))
+        href = a.attrs['href']
+        id = href.split("/")[-1]
+        r = requests.get("http://newsblog.chinatimes.com/" + href)
+        content = r.content.decode('utf-8')
+        # with open("org/%s.html"%id, "w") as f:
+        #     f.write(content)
+        print(id)
+        content = RE_FONT.sub('', content)
+        r = parse(id, content)
+        li.append(r)
     return li
 
 
@@ -71,6 +68,7 @@ float:right;
 </ul>
 </div></body></html>
 """)
+
 HTML = Template("""<!DOCTYPE html><html><head><meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name=viewport><meta charset=utf-8>
 <link rel="stylesheet" href="./init.css">
 </head>
@@ -94,6 +92,27 @@ HTML = Template("""<!DOCTYPE html><html><head><meta content="width=device-width,
 <div class="BACK"><a href="/">返回索引页</a></div>
 </body></html>""")
 
+HTML = Template("""
+<div class="POST" style="font-size:16px">${post}</div>
+<p class="DATE">发表日期 : ${date}</p>
+<div class="REPLY_LI">
+%if reply_li:
+<hr>
+<h2>${len(reply_li)} 条留言</h2>
+%for say, reply, user, time in reply_li:
+<hr>
+<div class="LI" style="font-size:16px">
+<p style="font-size:16px;font-weight:bold" class="USER"><span class="NAME">${user} 留言 : </span></p>
+<div style="font-size:16px" class="SAY">${say} (${time})</div>
+%if reply:
+<p style="font-size:16px;font-weight:bold">王孟源 回复:</p>
+<pstyle="font-size:16px" class="REPLY">${reply}<p>
+%endif
+</div>
+%endfor
+%endif
+</div>
+""")
 
 def parse(id, html):
     doc = BeautifulSoup(html)
@@ -166,8 +185,12 @@ def main():
     li = []
     for i in range(1, 5):
         li.extend(fetch_list(i))
+    with gzip.open("html/data.json.gz", "wb") as data:
+        for i in li:
+            s = dumps(i, ensure_ascii=False) + "\n"
+            data.write(s.encode('utf-8'))
     with open("index.html", "w") as index:
-        index.write(INDEX.render(li=li))
+        index.write(INDEX.render(li=[i[:2] for i in li]))
 
 
 main()
